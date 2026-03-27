@@ -1,8 +1,19 @@
 package gemini.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 import com.google.gson.Gson;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
@@ -10,12 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import javafx.stage.Stage;
 
 public class RegisterController {
 
@@ -111,6 +117,24 @@ public class RegisterController {
                 System.out.println("[!] LOI KET NOI: " + e.getMessage());
             }
         }).start(); // Bắt đầu chạy luồng ngầm
+    }
+
+    // Nho import thu vien giong ben LoginController
+
+    @FXML
+    public void switchToLogin(javafx.event.ActionEvent event) {
+        try {
+            System.out.println("-> Chuyen sang man hinh Dang nhap...");
+            // Load giao dien Dang nhap
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            // Lay ra cai Cua so (Stage) hien tai
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Gan bối cảnh (Scene) moi vao Cua so
+            stage.setScene(new Scene(root, 400, 350));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Loi chuyen man hinh: " + e.getMessage());
+        }
     }
 
     // Class nội bộ đơn giản để GSON bóc hộp phản hồi của Server

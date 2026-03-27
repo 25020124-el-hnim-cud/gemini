@@ -52,6 +52,11 @@
             <Insets top="10.0" />
          </VBox.margin>
       </Button>
+      <javafx.scene.control.Hyperlink text="Da co tai khoan? Quay lai Dang nhap" onAction="#switchToLogin">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </javafx.scene.control.Hyperlink>
    </children>
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

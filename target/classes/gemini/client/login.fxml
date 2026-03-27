@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://fx.com/fxml/1" fx:controller="gemini.client.LoginController">
+   <children>
+      <Label text="DANG NHAP HE THONG">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Label>
+      
+      <TextField fx:id="txtUsername" promptText="Tai khoan..." maxWidth="250.0"/>
+      <PasswordField fx:id="txtPassword" promptText="Mat khau..." maxWidth="250.0"/>
+      
+      <Label fx:id="lblMessage" text="..." textFill="#000000">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
+
+      <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="30.0" prefWidth="120.0" text="Dang Nhap">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Button>
+      <javafx.scene.control.Hyperlink text="Chua co tai khoan? Dang ky ngay" onAction="#switchToRegister">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </javafx.scene.control.Hyperlink>
+   </children>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</VBox>

@@ -1,9 +1,18 @@
 package gemini;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.google.gson.Gson;
-import java.io.*;
-import java.net.*;
-import java.sql.*;
 
 public class ServerApp {
 
@@ -34,15 +43,28 @@ public class ServerApp {
                     
                     UserRequest clientData = gson.fromJson(jsonReceived, UserRequest.class);
 
+                    // Kiem tra xem Client muon lam gi
                     if ("register".equals(clientData.action)) {
                         
                         boolean isSuccess = saveUserToDatabase(clientData);
-                        
                         if (isSuccess) {
-                            out.println("{\"status\":\"success\", \"message\":\"Tuyet voi! Da dang ky va luu vao Database thanh cong.\"}");
+                            out.println("{\"status\":\"success\", \"message\":\"Tuyet voi! Da dang ky thanh cong.\"}");
                         } else {
-                            out.println("{\"status\":\"error\", \"message\":\"Loi roi! Co the tai khoan nay da ton tai.\"}");
+                            out.println("{\"status\":\"error\", \"message\":\"Loi! Tai khoan co the da ton tai.\"}");
                         }
+                        
+                    } else if ("login".equals(clientData.action)) { // <--- THÊM ĐOẠN NÀY
+                        
+                        // Goi ham check Database
+                        String userRole = checkUserLogin(clientData.username, clientData.password);
+                        
+                        if (userRole != null) {
+                            // Neu dung, tra ve success va gui kem cai Role luon
+                            out.println("{\"status\":\"success\", \"message\":\"Dang nhap thanh cong!\", \"role\":\"" + userRole + "\"}");
+                        } else {
+                            out.println("{\"status\":\"error\", \"message\":\"Sai tai khoan hoac mat khau!\"}");
+                        }
+                        
                     } else {
                         out.println("{\"status\":\"error\", \"message\":\"Khong hieu lenh nay!\"}");
                     }
@@ -73,5 +95,31 @@ public class ServerApp {
             System.out.println("Loi luc chui vao Database: " + e.getMessage());
             return false;
         }
+    }
+
+    // --- HAM CHECK DANG NHAP ---
+    private static String checkUserLogin(String username, String password) {
+        // Dung lenh SELECT de tim tai khoan. Chi lay cot 'role' cho nhe mang.
+        String sql = "SELECT role FROM users WHERE username = ? AND password_hash = ?";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            
+            // Dung executeQuery de lay ket qua tu lenh SELECT
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Neu tim thay 1 dong, lay gia tri cua cot 'role' tra ve
+                    return rs.getString("role"); 
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Loi luc check Dang nhap trong Database: " + e.getMessage());
+        }
+        
+        return null; // Neu khong tim thay hoac loi thi tra ve null
     }
 }

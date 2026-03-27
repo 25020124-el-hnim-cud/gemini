@@ -1,12 +1,12 @@
 package gemini.client;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ClientApp extends Application {
 
@@ -15,7 +15,7 @@ public class ClientApp extends Application {
         System.out.println("=== DANG KHOI DONG CLIENT JAVAFX ===");
         
         // 1. Load file giao diện register.fxml từ thư mục resources
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login.fxml"));
         Parent root = fxmlLoader.load();
         
         // 2. Tao scene (bối cảnh) voi kich thuoc 400x350 pixel
